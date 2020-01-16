@@ -56,14 +56,23 @@ module.exports = {
             bio
         };
         
-        Dev.findOneAndUpdate({'github_username': github_username},infos, { omitUndefined:true, useFindAndModify: false }, (err,doc) => {
+        Dev.findOneAndUpdate({'github_username': github_username},infos, { omitUndefined:true, useFindAndModify: false }, (err) => {
             if (err) return response.status(500).json({error: err});
             return response.status(200).json({ status: 'updated' });
             });
         },
 
     delete: async (request, response) => {
-        //TO-DO
+        const github_username = request.params.user;
+
+        Dev.deleteOne({github_username}, (err) => {
+            if (err) {
+                return response.status(500).json({status: 'failed'});
+            }
+            return response.status(200).json({status: 'dev deleted'});
+        });
+
+        
 
     }
 }
