@@ -45,8 +45,22 @@ module.exports = {
 
 
     update: async (request, response) => {
-        //TO-DO
-    },
+        const github_username = request.params.user;
+
+        const {name, avatar_url, techs, bio} = request.body;
+
+        const infos = {
+            name,
+            avatar_url,
+            techs,
+            bio
+        };
+        
+        Dev.findOneAndUpdate({'github_username': github_username},infos, { omitUndefined:true, useFindAndModify: false }, (err,doc) => {
+            if (err) return response.status(500).json({error: err});
+            return response.status(200).json({ status: 'updated' });
+            });
+        },
 
     delete: async (request, response) => {
         //TO-DO
